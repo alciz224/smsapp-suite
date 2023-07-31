@@ -5,6 +5,9 @@ from django.core.exceptions import ValidationError
 from django.db import models
 
 # Create your models here.
+from people.models import WebAdmin, SchoolAdmin, Teacher, Student
+
+
 class CustomUserManager(BaseUserManager):
 
     def create_superuser(self, username, email, password):
@@ -43,10 +46,10 @@ class CustomUserManager(BaseUserManager):
 
 class CustomUser(AbstractUser):
     USER_TYPES = (
-        ('STUDENT', 'Student'),
-        ('TEACHER', 'Teacher'),
-        ('SCHOOLADMIN', 'School Admin'),
-        ('ADMIN', 'Admin')
+        ('STUDENT', 'Elève'),
+        ('TEACHER', 'Professeur'),
+        ('SCHOOLADMIN', 'Administrateur Scolaire'),
+        ('ADMIN', 'Administrateur')
     )
     school = models.ForeignKey('school.School', on_delete=models.CASCADE, null=True, blank=True)
     user_type = models.CharField(max_length=50, choices=USER_TYPES)
@@ -58,3 +61,19 @@ class CustomUser(AbstractUser):
 
     def __str__(self):
         return self.username
+
+    """def get_profile(self):
+        try:
+            return self.people.webadmin
+        except WebAdmin.DoesNotExist:
+            try:
+                return self.people.schooladmin
+            except SchoolAdmin.DoesNotExist:
+                try:
+                    return self.people.teacher
+                except Teacher.DoesNotExist:
+                    try:
+                        return self.people.student
+                    except Student.DoesNotExist:
+                        return None"""
+

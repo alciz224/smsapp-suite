@@ -1,0 +1,15 @@
+{% extends 'people/app_base.html' %}
+{% block body_class %}student-home{% endblock %}
+{% block pagetitle %}
+<div> / suite</div>
+{% endblock %}
+{% block content_head %}
+
+{% endblock %}
+{% block content_body %}
+    <p>I learn English Language</p>
+    {% if profile.studentsystudents.first %}
+    <p>{{ profile.studentsystudents.first }}</p>
+    {% endif %}
+    <a href="{% url 'student_detail' profile.pk %}">profile</a>
+{% endblock %}

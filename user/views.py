@@ -7,6 +7,7 @@ from django.shortcuts import render, redirect
 from django.urls import reverse, reverse_lazy
 from django.views.generic import CreateView, TemplateView, RedirectView
 
+from people.mixins import UserInfoMixin
 from user.forms import MyUserCreationForm, MyLoginForm, CombinedForm
 from user.models import CustomUser
 
@@ -22,17 +23,18 @@ class MyLoginView(LoginView):
 class MyLogoutView(LogoutView):
     next_page = 'user_login'
 
-class UserHomeView(TemplateView):
-    template_name = 'user/home.html'
+class UserHomeView(UserInfoMixin,TemplateView):
+    template_name = 'people/admin/home.html'
 
-class StudentHomeView(TemplateView):
-    template_name = 'user/student_home.html'
+class StudentHomeView(UserInfoMixin, TemplateView):
 
-class TeacherHomeView(TemplateView):
-    template_name = 'user/teacher_home.html'
+    template_name = 'people/student/student_home.html'
 
-class SAHomeView(TemplateView):
-    template_name = 'user/school_admin_home.html'
+class TeacherHomeView(UserInfoMixin,TemplateView):
+    template_name = 'people/teacher/teacher_home.html'
+
+class SAHomeView(UserInfoMixin,TemplateView):
+    template_name = 'people/schooladmin/school_admin_home.html'
 
 class HomeRedirectView(RedirectView):
 

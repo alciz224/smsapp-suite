@@ -25,6 +25,7 @@ from user.views import HomeRedirectView
 
 urlpatterns = [
     path('', HomeRedirectView.as_view(), name='home_redirect'),
+    path('', include('people.urls')),
     path('admin/', admin.site.urls),
     path('user/', include('user.urls')),
 

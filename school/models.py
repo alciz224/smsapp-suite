@@ -6,6 +6,7 @@ from django.db import models
 from django.db.models import Max
 
 from people.models import Student, Teacher
+from user.models import CustomUser
 
 """SCHOOL MODEL"""
 class School(models.Model):
@@ -153,7 +154,7 @@ class Classroom(models.Model):
 
 
 class SchoolYearStudent(models.Model):
-    student = models.ForeignKey(Student, on_delete=models.CASCADE)
+    student = models.ForeignKey(Student, on_delete=models.CASCADE, related_name='studentsystudents')
     level = models.ForeignKey(Level, on_delete=models.CASCADE)
     classroom = models.ForeignKey(Classroom, on_delete=models.CASCADE)
     has_promotion = models.BooleanField()
@@ -260,6 +261,52 @@ class Mark(models.Model):
 
     def __str__(self):
         return f'{self.student}-{self.subject}-{self.mark_type}'
+
+
+class SchoolInfo(models.Model):
+    title = models.CharField(max_length=100, blank=False, null=False, help_text="titre de l'information")
+    content = models.TextField(help_text="contenu de l'information")
+    author = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    to_all = models.BooleanField()
+    to_level = models.ForeignKey(Level, on_delete=models.CASCADE)
+    to_classroom = models.ForeignKey(Classroom, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+    is_active = models.BooleanField()
+
+
+class MonthlySchedule(models.Model):
+    name = models.CharField(max_length=200, null=False, blank=False, help_text="le nom peut etre mensuel, trimestriel ou semestriel. Ex: ('Janvier', '1er trimestre')")
+    school = models.ForeignKey(SchoolYear, on_delete=models.CASCADE)
+    is_current = models.BooleanField(help_text="en l'activant, il devient l'emploi du temps courant que les professeurs et élèves vérons dans leur interface")
+    class Meta:
+        unique_together = ['name', 'school']
+
+
+class TimeTable(models.Model):
+    DAYS = (
+        ('LUNDI', 'Lundi'),
+        ('MARDI', 'Mardi'),
+        ('MERCREDI', 'Mercrédi'),
+        ('JEUDI', 'Jeudi'),
+        ('VENDREDI', 'Vendredi'),
+        ('SAMEDI', 'Samedi'),
+        ('DIMANCHE', 'Dimanche'),
+    )
+    schedule = models.ForeignKey(MonthlySchedule, on_delete=models.CASCADE)
+    start_time = models.TimeField()
+    end_time = models.TimeField()
+    day = models.CharField(max_length=50, choices=DAYS, null=False, blank=False)
+    subject = models.ForeignKey(Subject, on_delete=models.CASCADE, related_name='subjecttimetables', editable=True)
+    classroom = models.ForeignKey(Classroom, on_delete=models.CASCADE, related_name='classroomtimetables')
+
+    def clean(self):
+        if self.end_time <= self.start_time:
+            raise ValidationError("L'heure du debut du cours doit etre inférieure à celle de la fin du cours")
+
+
+
+
+
 
 
 

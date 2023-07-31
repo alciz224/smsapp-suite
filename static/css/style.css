@@ -1,14 +1,351 @@
+
+
+
 body{
+    padding: 0;
+    margin: 0;
+    font-family: sans-serif;
+}
+a{
+    text-decoration: none;
+}
+.wrapper{
+    min-height: 100vh;
+    width: 100%;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    grid-template-rows: auto 1fr auto;
+    column-gap: 1PX;
+}
+.brand{
+    background-color: teal;
+    display: flex;
+
+    grid-area: 1/1/2/2;
+    align-items: center;
+    justify-content: center;
+
+}
+.header{
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: teal;
+    color: snow;
+    grid-area: 1/2/2/3;
+    padding: 10px;
+
+}
+.aside{
+    background-color: #2C3E50;
+    color: snow;
+    grid-area: 2/1/3/2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 20px;
+    padding-left: 10px;
+
+
+}
+.content{
+    width: 100%;
+
+    margin-top: 0;
+    padding-top: 0;
+    background-color: #F1F1F1;
+    color: black;
+    grid-area: 2/2/3/3;
+}
+.footer{
+    background-color: yellow;
+    color: black;
+    grid-area: 3/1/4/3;
+}
+
+/* --------------auth--------------*/
+.body-userlogin,
+.body-usercreate{
+    color: snow;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
     background-image: linear-gradient(to bottom, rgba(0, 0,0, 0.9) 40%, rgba(0,0,0, 0.5) 100%) , url('/static/image/bg2.jpg');
     background-color: #ffffff;
     background-size: cover;
     background-position: center;
-    color: snow;
-    font-weight: bold;
-    font-family: sans-serif;
-    margin: 0;
-    padding: 0;
+    height: 100vh;
+}
+.body-userlogin .form-card,
+.body-usercreate .form-card{
+    padding-inline: 20px;
+    width: 300px;
+    border: rgba(255,255,255, 0.3) solid 1px;
+    border-radius: 10px;
+    background-color: rgba(00,150,150, .5);
+    backdrop-filter: blur(0.5rem);
+}
+.body-userlogin .form-card > div,
+.body-usercreate .form-card > div{
+    text-align: center;
+    padding-block: 20px 10px;
+    width: 100%;
+    /*border-bottom: rgba(255,255,255, 0.3) solid 1px;*/
+    font-size: 1.5rem;
+}
+.body-userlogin .form-card .form-group,
+.body-usercreate .form-card .form-group{
+    width: 100%;
     display: flex;
     flex-direction: column;
-    min-height: 100vh;
+    justify-content: start;
+    margin-bottom: 1rem;
 }
+.body-userlogin .form-card label,
+.body-usercreate .form-card label{
+    font-size: .8rem;
+    width: 120px;
+    padding-left: .3rem;
+    padding-bottom: .2rem;
+
+
+}
+.body-userlogin .form-card input,
+.body-usercreate .form-card input,
+.body-usercreate .form-card select{
+    flex: 1;
+    font-size: .8rem;
+    padding-block: .4rem;
+    padding-inline:  .8rem .8rem;
+    border-radius: .4rem;
+    border-style: solid;
+
+}
+
+.body-userlogin .form-card p,
+.body-usercreate .form-card p{
+    font-size: .8rem;
+}
+
+.body-userlogin .form-card a,
+.body-usercreate .form-card a{
+    color: cyan;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.brand .brandtext{
+    color: snow;
+    align-items: center;
+    font-weight: bold;
+    font-size: 1.5rem;
+}
+.header .headertitle{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.header .headertitle .icon{
+    font-size: 1.5rem;
+}
+.header .headertitle .title{
+    font-size: 1.2rem;
+}
+
+.header .headerdetail{
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+.header .headerdetail .greenlight{
+    width: 7px;
+    height: 7px;
+    background-color: lime;
+    position: absolute;
+    left: 18px;
+    top: 3px;
+}
+
+.header .headerdetail .picwrapper{
+    height: 20px;
+    width: 20px;
+    border-radius: 50%;
+    border: 2px snow solid;
+    overflow: hidden;
+    margin-right: 7px;
+
+}
+.header .headerdetail .picwrapper img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.header .username{
+    font-weight: lighter;
+    color: snow;
+    font-size: small;
+    margin-right: 40px;
+}
+.header .headerdetail a{
+    font-weight: normal;
+    font-size: small;
+    color: snow;
+    padding-left: 40px;
+    border-left: #009090 2px solid;
+}
+.header .headerdetail .fas{
+    background-color: #009090;
+    font-size: .8rem;
+    color: #ff253a;
+    padding: 4px;
+    border-radius: 40%;
+    margin-left: 4px;
+    border: #009090 2px solid;
+}
+.header .headerdetail .logout:hover{
+    color: #ff253a;
+}
+
+/*--------ASIDE-------------*/
+
+.aside .profile-card{
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+.aside .image-wrapper{
+    border: 4px solid #F1F1F1;
+    border-radius: 50%;
+    height: 60px;
+    width: 60px;
+    overflow: hidden;
+    /*margin-right: 10px;
+    margin-bottom: 5px;
+    margin-left: 20px;*/
+}
+.aside .image-wrapper > img{
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+
+}
+.aside .info{
+    padding-inline: 10px;
+    width: 150px;
+
+}
+.aside .info .firstname{
+    font-size: 1rem;
+    font-weight: lighter;
+}
+.aside .info .lastname{
+    font-size: 1rem;
+    font-weight: bold;
+}
+.aside .info .role{
+    font-weight: normal;
+    font-size: 0.8rem;
+
+
+
+}
+.aside .menu{
+    margin-top: 20px;
+    width: 100%;
+    overflow-inline: hidden;
+}
+.aside .menu ul{
+    padding: 0;
+    margin: 0;
+    width: 100%;
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+    overflow-inline: hidden;
+}
+.aside .menu ul li{
+    list-style: none;
+    width: 100%;
+    background-color: coral;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+    overflow-inline: hidden;
+}
+
+
+.aside .menu i{
+    padding-inline: 1rem;
+}
+.aside .menu a{
+    display: block;
+    /*height: 100%;*/
+    width: calc(100% - 5px);
+    line-height: 50px;
+    color: #F1F1F1;
+    background-color: #2C3E50;
+    font-size: 20px;
+    padding-left: 20px;
+    box-sizing: border-box;
+}
+.aside .menu a:hover{
+    color: coral;
+    width: calc(100% - 4px);
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+    position: relative;
+    border-block: rgb(74,92,110) solid 1px;
+
+
+}
+.aside .menu a:focus{
+    color: coral;
+    /*width: calc(100% - 10px);*/
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+    position: relative;
+    left: 4px;
+    border-block: rgb(74,92,110) solid 1px;
+
+
+}
+.content .contenthead .nav{
+    display: flex;
+    background-color: snow;
+    align-items: center;
+    min-height: 50px;
+    justify-content: center;
+    gap: 10px;
+    position: relative;
+
+
+}
+.content .contenthead .pagetitle{
+    display: flex;
+    column-gap: 5px;
+    align-items: baseline;
+    color: teal;
+    font-size: 1.2rem;
+    font-weight: bold;
+    position: absolute;
+    left: 10px;
+}
+.content .contenthead .pagetitle .text,
+.content .contenthead .pagetitle .fas{
+    color: teal;
+}
+.content .contenthead .nav div, small{
+    padding: 0;
+    margin: 0;
+    color: #2C3E50;
+}
+
+/*---------------single page styling ------------*/
+
+
+/* ------------- user auth pages ------------------*/
+
+
+
+

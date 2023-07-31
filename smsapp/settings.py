@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'school', 'user', 'people',
+    'fontawesomefree',
 ]
 
 MIDDLEWARE = [
@@ -131,7 +132,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'user.CustomUser'
 
 
-LOGIN_URL = 'auth_home'
+LOGIN_URL = 'user-login'
 
 LOGIN_REDIRECT_URL = 'home_redirect'
-LOGOUT_REDIRECT_URL = 'auth_home'
+LOGOUT_REDIRECT_URL = 'user-login'

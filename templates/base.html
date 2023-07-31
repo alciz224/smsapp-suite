@@ -1,0 +1,30 @@
+{% extends 'common.html' %}
+{% block body %}
+    <div class="wrapper">
+        <div class="brand"><div class="brandtext">GuinApp.com</div></div>
+        <div class="header">
+            <div class="headertitle">{% block header_title %}{% endblock %}</div>
+            <div class="headerdetail">
+                    <div class="greenlight"></div>
+                <div class="picwrapper">
+                    {% if profile.image %}
+
+                        <img src="{{ profile.image.url }}" alt="profile">
+                    {% else %}
+                        <img src="" alt="profile">
+                    {% endif %}
+                </div>
+
+                {% if request.user.is_authenticated %}
+                    <div class="username">@{{ request.user.username }}</div>
+                    <a class="logout" href="{% url 'user_logout' %}">se deconnecter<i class="fas fa-power-off"></i></a>
+                {% else %}
+                    <a class="login" href="{% url 'user_login' %}"><i class="fas fa-sign-in"></i>se connecter</a>
+                {% endif %}
+            </div>
+        </div>
+        <div class="aside">{% block aside %}{% endblock %}</div>
+        <div class="content">{% block content %}{% endblock %}</div>
+        <div class="footer">{% block footer %}{% endblock %}</div>
+    </div>
+{% endblock %}

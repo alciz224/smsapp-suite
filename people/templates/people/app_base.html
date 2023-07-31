@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+{% block header_title %}
+    {% if request.user.user_type == 'STUDENT' %}
+    <i class="fa fa-university"></i>
+    <div class="title">Lycée Filima</div>
+    {% endif %}
+{% endblock %}
+{% block aside %}
+    <div class="profile-card">
+        <div class="image-wrapper">
+            {% if profile.image %}
+                <img src="{{ profile.image.url }}" alt="">
+            {% else %}
+                <img src="" alt="profile pic">
+            {% endif %}
+        </div>
+        <div class="info">
+            <div class="firstname">{{ profile.firstname }}</div>
+            <div class="lastname">{{ profile.lastname }}</div>
+            <hr style="margin-right: 10px; border-color: rgb(74,92,110)">
+            <div class="role">{{ user.role }}</div>
+        </div>
+    </div>
+    <div class="menu">
+        <hr style="margin-right: 10px; border-color: rgb(74,92,110)">
+    <div style="text-align: center;">menu</div>
+    {% block menu %}
+        {% if request.user.user_type == 'TEACHER' %}
+            <ul>
+                <li>menu1</li>
+                <li>menu2</li>
+                <li>menu3</li>
+                <li>menu4</li>
+            </ul>
+        {% elif request.user.user_type == 'STUDENT' %}
+            <ul>
+
+                <li><a class="active" href=""><i class="fa fas fa-qrcode"></i>Tableau de bord</a></li>
+                <li><a href="#"><i class="fas fa-chalkboard"></i>Classe</a></li>
+                <li><a href="#"><i class="fas fa-note-sticky"></i>Notes</a></li>
+                <li><a href="#"><i class="fas fa-clock"></i>Emploi du temps</a></li>
+                <li><a href="#"><i class="fas fa-info-circle"></i>Info / Messages</a></li>
+                <li><a href="#"><i class="fas fa-list-ol"></i>Resultats</a></li>
+                <li><a href="#"><i class="fas fa-book-open-reader"></i>Bibliothèque</a></li>
+                <li><a href="#"><i class="fas fa-user"></i>Compte</a></li>
+            </ul>
+        {% elif request.user.user_type == 'SCHOOLADMIN' %}
+            <ul>
+                <li>menu9</li>
+                <li>menu10</li>
+                <li>menu11</li>
+                <li>menu12</li>
+            </ul>
+        {% elif request.user.user_type == 'ADMIN' %}
+            <ul>
+                <li>menu13</li>
+                <li>menu14</li>
+                <li>menu15</li>
+                <li>menu16</li>
+            </ul>
+        {% endif %}
+    {% endblock %}
+    </div>
+{% endblock %}
+{% block content %}
+    <div class="contenthead">
+    {% if request.user.user_type == 'STUDENT' %}
+        <div class="nav"><div class="pagetitle"><i class="fas fa-home"></i>
+    {% block pagetitle %}{% endblock %}</div><div>session:</div><small>2023-2024</small></div>
+    {% endif %}
+        {% block content_head %}{% endblock %}</div>
+    <div class="contentbody">{% block content_body %}{% endblock %}</div>
+{% endblock %}
+{% block footer %}
+    <div class="container">
+    <h2>footer</h2>
+    </div>
+{% endblock %}

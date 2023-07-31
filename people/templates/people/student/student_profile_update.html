@@ -1,0 +1,11 @@
+{% extends 'people/app_base.html' %}
+
+{% block content_body %}
+<h4>Mise à jour du profile</h4>
+    <form enctype="multipart/form-data" method="post" novalidate>
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">enregister</button>
+    </form>
+
+{% endblock %}
