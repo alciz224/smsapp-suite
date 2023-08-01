@@ -1,6 +1,6 @@
-
 {% extends 'people/app_base.html' %}
-{% if book_id %}
+{% block content_body %}
+    {% if book_id %}
     <p>Updating Book {{ book_id }}</p>
 {% endif %}
 <form method="post">
@@ -9,4 +9,4 @@
     {{ form }}
      <button type="submit"></button>
 </form>
-{% block content_body %}{% endblock %}
+{% endblock %}
