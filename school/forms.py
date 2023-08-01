@@ -8,8 +8,8 @@ class ScheduleForm(forms.ModelForm):
         model = MonthlySchedule
         fields = ['name']
 
-'''class TimeTableForm(forms.ModelForm):
+class TimeTableForm(forms.ModelForm):
     class Meta:
         model = TimeTable
-        fields = ['__all__']'''
+        fields = ['day']
 
