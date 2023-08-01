@@ -46,7 +46,7 @@ class TimeTableCreateView(CreateView):
             else:
                 similar_timetable = TimeTable.objects.filter(start_time__hour=cleaned_data['start_time']).first().start_time.hour
                 if similar_timetable:
-                    messages.info(self.request, 'Similar timetable found. You can update it below.')
+                    #messages.info(self.request, 'Similar timetable found. You can update it below.')
                     return self.render_to_response(self.get_context_data(form=form, timetable_id=similar_timetable.id))
                 self.object = TimeTable.objects.create(**cleaned_data)
 
@@ -56,5 +56,4 @@ class TimeTableCreateView(CreateView):
 
 class TimeTableListView(ListView):
     template_name = 'school/timetable_list.html'
-
 
