@@ -18,15 +18,13 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
-
-
-from smsapp.views import homeView
-from user.views import HomeRedirectView
+#from user.views import HomeRedirectView
 
 urlpatterns = [
-    path('', HomeRedirectView.as_view(), name='home_redirect'),
-    path('', include('people.urls')),
+#    path('', HomeRedirectView.as_view(), name='home_redirect'),
+
     path('admin/', admin.site.urls),
     path('user/', include('user.urls')),
+    path('/', include('people.urls')),
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
