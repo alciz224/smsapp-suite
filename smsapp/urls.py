@@ -21,7 +21,7 @@ from django.urls import path, include
 from user.views import HomeRedirectView
 
 urlpatterns = [
-    path('', HomeRedirectView.as_view(), name='home_redirect'),
+#    path('', HomeRedirectView.as_view(), name='home_redirect'),
 
     path('admin/', admin.site.urls),
     path('user/', include('user.urls')),
