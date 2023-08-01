@@ -299,9 +299,6 @@ class TimeTable(models.Model):
     subject = models.ForeignKey(Subject, on_delete=models.CASCADE, related_name='subjecttimetables', editable=True)
     classroom = models.ForeignKey(Classroom, on_delete=models.CASCADE, related_name='classroomtimetables')
 
-    def clean(self):
-        if self.end_time <= self.start_time:
-            raise ValidationError("L'heure du debut du cours doit etre inférieure à celle de la fin du cours")
 
 
 
