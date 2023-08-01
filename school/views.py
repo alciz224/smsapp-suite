@@ -13,7 +13,7 @@ class ScheduleCreateView(CreateView):
     fields = ['name', 'school', 'is_current']
 
     template_name = 'school/schedule_create.html'
-    success_url = 'schedule_list'
+    success_url = 'schedule-list'
 
 class ScheduleListView(ListView):
 
@@ -25,7 +25,7 @@ class TimeTableCreateView(CreateView):
     fields = ['schoole', 'start_time', 'end_time', 'day', 'subject', 'classroom']
 
     template_name = 'school/timetable_create.html'
-    success_url = 'schedule-list'
+    success_url = 'timetable-list'
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
