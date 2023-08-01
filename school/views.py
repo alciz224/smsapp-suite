@@ -3,7 +3,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 
 # Create your views here.
 
-from django.views.generic import CreateView, ListView
+from django.views.generic import CreateView, ListView, UpdateView
 
 from school.forms import TimeTableCreateForm
 from school.models import MonthlySchedule, TimeTable
@@ -23,44 +23,44 @@ class ScheduleListView(ListView):
     template_name = 'school/schedule_list.html'
 
 class TimeTableCreateView(CreateView):
+    form_class = TimeTableCreateForm
     model = TimeTable
-    fields = ['schedule', 'start_time', 'end_time', 'day', 'subject', 'classroom']
+#   fields = ['schedule', 'start_time', 'end_time', 'day', 'subject', 'classroom']
 
     template_name = 'school/timetable_create.html'
     success_url = 'timetable-list'
 
-    def get_form_kwargs(self):
-        kwargs = super().get_form_kwargs()
-        if self.kwargs.get('timetable_id'):
-            self.timetable_to_update = get_object_or_404(TimeTable, id=self.kwargs['timetable_id'])
-            return kwargs
+    def form_valid(self, form):
+        schedule = form.cleaned_data['schedule']
+        start_time = form.cleaned_data['start_time']
+        end_time = form.cleaned_data['end_time']
+        day = form.cleaned_data['day']
+        subject = form.cleaned_data['subject']
+        classroom = form.cleaned_data['classroom']
 
-        def form_valid(self, form):
-            cleaned_data = form.cleaned_data
+        duplicate = TimeTable.objects.filter(schedule=schedule,
+                                             start_time__range=(start_time, end_time),
+                                             day=day,
+                                             classroom=classroom
+                                             ).first()
+        if duplicate:
+            messages.info(self.request, f"une classe existe déjà entre {start_time} et {end_time}!"
+                                        f"Vous pouvez la mettre à jour ou cliquer sur choisir un autre horaire")
+            return redirect('timetable_update', duplicate.pk)
 
-            if self.timetable_to_update:
+        return super().form_valid(form)
 
-                self.object = self.timetable_to_update
-                self.object.schedule = cleaned_data['schedule_id']
-                self.object.start_time = cleaned_data['start_time']
-                self.object.end_time = cleaned_data['end_time']
-                self.object.day = cleaned_data['day']
-                self.object.subject = cleaned_data['subject_id']
-                self.object.classroom = cleaned_data['classroom_id']
 
-            else:
-                similar_timetable = TimeTable.objects.filter(start_time__hour=cleaned_data['start_time']).first()
-                if similar_timetable:
-                    messages.info(self.request, 'Similar timetable found. You can update it below.')
-                    return self.render_to_response(self.get_context_data(form=form, timetable_id=similar_timetable.id))
-                self.object = TimeTable.objects.create(**cleaned_data)
-
-            return super().form_valid(form)
-
+class TimeTableUpdateView(UpdateView):
+    form_class = TimeTableCreateForm
+    model = TimeTable
+    success_url = 'timetable-list'
+    template_name = 'school/timetable_update.html'
 
 
 class TimeTableListView(ListView):
     model = TimeTable
+    context_object_name = 'horaire'
     template_name = 'school/timetable_list.html'
 
 def timetable_create(request):

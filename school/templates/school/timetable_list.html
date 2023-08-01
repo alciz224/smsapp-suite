@@ -1,6 +1,7 @@
 {% extends 'people/app_base.html' %}
 {% block content_body %}
-    {% for obj in object_list %}
-    <p>{{ obj }}</p>
+        <a href="{% url 'timetable_creat' %}">Add Timetable</a>
+    {% for hor in horaire %}
+    <p>{{ hor }}</p>
     {% endfor %}
 {% endblock %}

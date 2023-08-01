@@ -1,14 +1,11 @@
 {% extends 'people/app_base.html' %}
 {% block content_body %}
-    {% if book_id %}
-    <p>Updating Book {{ book_id }}</p>
-{% endif %}
 
 <form method="post">
 
     {% csrf_token %}
     {{ form }}
-     <button type="submit">Add</button>
+     <button type="submit">Update</button>
 </form>
     {% if messages %}
         {% for message in messages %}

@@ -14,7 +14,7 @@ class TimeTableCreateForm(forms.ModelForm):
 
     start_time = forms.TimeField(
 
-        widget=forms.TimeInput(attrs={'type': 'time', 'id': 'startTime', 'step': '900', 'min': '07:00', 'max': '18:30'}), input_formats=['%H:%M'],
+        widget=forms.TimeInput(attrs={'type': 'time', 'step': '900', 'min': '07:00', 'max': '18:30'}), input_formats=['%H:%M'],
         validators=[
             MinValueValidator(datetime.time(7, 0)),
             MaxValueValidator(datetime.time(18, 30))
@@ -22,7 +22,7 @@ class TimeTableCreateForm(forms.ModelForm):
     )
     end_time = forms.TimeField(
 
-        widget=forms.TimeInput(attrs={'type': 'time', 'id': 'endtTime', 'step': '900', 'min': '08:00', 'max': '18:30'}, format='%H:%M',),
+        widget=forms.TimeInput(attrs={'type': 'time', 'step': '900', 'min': '08:00', 'max': '18:30'}, format='%H:%M',),
         input_formats=['%H:%M'],
         validators=[
             MinValueValidator(datetime.time(8, 0)),

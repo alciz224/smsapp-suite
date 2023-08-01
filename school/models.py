@@ -281,6 +281,9 @@ class MonthlySchedule(models.Model):
     class Meta:
         unique_together = ['name', 'school']
 
+    def __str__(self):
+        return self.name
+
 
 class TimeTable(models.Model):
     DAYS = (
@@ -299,7 +302,8 @@ class TimeTable(models.Model):
     subject = models.ForeignKey(Subject, on_delete=models.CASCADE, related_name='subjecttimetables', editable=True)
     classroom = models.ForeignKey(Classroom, on_delete=models.CASCADE, related_name='classroomtimetables')
 
-
+    def __str__(self):
+        return f'{self.schedule}-{self.start_time}-{self.end_time}-{self.classroom}'
 
 
 
