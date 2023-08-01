@@ -4,8 +4,8 @@ from django.shortcuts import render, get_object_or_404
 # Create your views here.
 
 from django.views.generic import CreateView, ListView
-from school.forms import ScheduleForm
-from school.models import MonthlySchedule
+from school.forms import ScheduleForm, TimeTableForm
+from school.models import MonthlySchedule, TimeTable
 
 
 class ScheduleCreateView(CreateView):

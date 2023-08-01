@@ -9,6 +9,7 @@ class ScheduleForm(forms.ModelForm):
         fields = ['name']
 
 class TimeTableForm(forms.ModelForm):
+
     class Meta:
         model = TimeTable
         fields = ['day']
