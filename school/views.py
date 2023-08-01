@@ -5,7 +5,7 @@ from django.shortcuts import render, get_object_or_404
 from django.urls import reverse
 from django.views.generic import CreateView, ListView
 from school.forms import ScheduleForm
-from school.models import MonthlySchedule, TimeTable
+from school.models import MonthlySchedule
 
 
 class ScheduleCreateView(CreateView):
@@ -13,6 +13,11 @@ class ScheduleCreateView(CreateView):
     model = MonthlySchedule
     template_name = 'school/schedule_create.html'
     success_url = reverse('schedule_list')
+
+class ScheduleListView(ListView):
+
+    model = MonthlySchedule
+    template_name = 'school/schedule_list.html'
 
 '''class TimeTableCreateView(CreateView):
     form_class = TimeTableForm
@@ -48,10 +53,7 @@ class ScheduleCreateView(CreateView):
             return super().form_valid(form)
 
 '''
-class ScheduleListView(ListView):
 
-    model = MonthlySchedule
-    template_name = 'school/schedule_list.html'
 class TimeTableListView(ListView):
     template_name = 'school/timetable_list.html'
 
