@@ -4,15 +4,16 @@ from django.shortcuts import render, get_object_or_404
 # Create your views here.
 
 from django.views.generic import CreateView, ListView
-from school.forms import ScheduleForm, TimeTableForm
 from school.models import MonthlySchedule, TimeTable
 
 
 class ScheduleCreateView(CreateView):
-    form_class = ScheduleForm
+
     model = MonthlySchedule
+    fields = ['name', 'school', 'is_current']
+
     template_name = 'school/schedule_create.html'
-    success_url = ('schedule_list')
+    success_url = 'schedule_list'
 
 class ScheduleListView(ListView):
 
@@ -20,10 +21,11 @@ class ScheduleListView(ListView):
     template_name = 'school/schedule_list.html'
 
 class TimeTableCreateView(CreateView):
-    form_class = TimeTableForm
     model = TimeTable
+    fields = ['schoole', 'start_time', 'end_time', 'day', 'subject', 'classroom']
 
     template_name = 'school/timetable_create.html'
+    success_url = 'schedule-list'
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
@@ -55,5 +57,6 @@ class TimeTableCreateView(CreateView):
 
 
 class TimeTableListView(ListView):
+    model = TimeTable
     template_name = 'school/timetable_list.html'
 
