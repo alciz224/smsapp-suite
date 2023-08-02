@@ -303,7 +303,7 @@ class TimeTable(models.Model):
     classroom = models.ForeignKey(Classroom, on_delete=models.CASCADE, related_name='classroomtimetables')
 
     def __str__(self):
-        return f'{self.schedule}-{self.start_time}-{self.end_time}-{self.classroom}'
+        return f'{self.schedule}-{self.day}-{self.start_time}-{self.end_time}-{self.classroom}'
 
 
 

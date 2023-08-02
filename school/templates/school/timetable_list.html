@@ -1,7 +1,31 @@
 {% extends 'people/app_base.html' %}
+
+{% block content_head %}
+    {% if messages %}
+        {% for message in messages %}
+            <p>{{ message }}</p>
+        {% endfor %}
+    {% endif %}
+{% if similar %}
+     <p>{{ similar }}</p>
+    <a href="{% url 'timetable_update' similar.pk %}">Mettre à jour</a>
+    <hr>
+{% endif %}
+
+
+    <form method="post">
+
+    {% csrf_token %}
+    {{ form }}
+     <button type="submit">Add</button>
+</form>
+
+
+{% endblock %}
 {% block content_body %}
         <a href="{% url 'timetable_creat' %}">Add Timetable</a>
-    {% for hor in horaire %}
-    <p>{{ hor }}</p>
+    {% for hor in object_list %}
+    <p>{{ hor.schedule }}-{{ hor.day }}-{{ hor.start_time }}-{{ hor.end_time }}-{{ hor.classroom }}</p>
     {% endfor %}
+
 {% endblock %}

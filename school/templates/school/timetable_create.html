@@ -17,16 +17,5 @@
     {% endif %}
 {% endblock %}
 {% block page_js %}
-    <script>
-    const starttime = document.getElementById('id_start_time');
-    const endtime = document.getElementById('id_end_time');
 
-    starttime.setAttribute('min', '07:00');
-    starttime.setAttribute('max', '18:30');
-    starttime.step = 900;
-
-    endtime.setAttribute('min', '08:00');
-    endtime.setAttribute('max', '18:30');
-    endtime.step = 900;
-    </script>
 {% endblock %}
