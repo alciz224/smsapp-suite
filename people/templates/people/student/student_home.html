@@ -7,9 +7,81 @@
 
 {% endblock %}
 {% block content_body %}
-    <p>I learn English Language</p>
-    {% if profile.studentsystudents.first %}
-    <p>{{ profile.studentsystudents.first }}</p>
-    {% endif %}
-    <a href="{% url 'student_detail' profile.pk %}">profile</a>
+<div class="contentgrid">
+
+<div class="card-profile one">
+<div class="titles">Profile</div>
+<div class="body">
+<div class="wrapperall">
+    <div class="imgwrapper">
+        {% if profile.image.url %}
+            <img src="{{ profile.image.url }}" alt="">
+        {% else %}
+            <i class="fas fa-user"></i>
+        {% endif %}
+    </div>
+</div>
+
+    <table class="detailtext">
+        <tbody>
+        <tr class="detailtextrow">
+            <td>Prénom</td>
+            <td>Aly</td>
+        </tr>
+        <tr class="detailtextrow">
+            <td>Nom</td><td>cissé</td>
+        </tr>
+        <tr class="detailtextrow">
+            <td>Sexe</td><td>masculin</td>
+        </tr>
+        <tr class="detailtextrow">
+            <td>Age</td><td>20 ans</td>
+        </tr>
+        <tr class="detailtextrow">
+            <td>Téléphone</td><td>669004506</td>
+        </tr>
+        <tr class="detailtextrow">
+            <td>Email</td><td>cisse@gmail.com</td>
+        </tr>
+        </tbody>
+
+    </table>
+</div>
+
+</div>
+ <div class="card-profile two">
+<div class="titles">Info scolaire 2023-2024</div>
+<div class="body">
+    <table class="detailtext">
+        <tbody>
+        <tr class="detailtextrow">
+            <td>Etablissement:</td>
+            <td>Lycée Filima (Kamsar)</td>
+        </tr>
+        <tr class="detailtextrow">
+            <td>Option</td><td>Sciences Mathématiques</td>
+        </tr>
+        <tr class="detailtextrow">
+            <td>Classe</td><td>Terminale</td>
+        </tr>
+        <tr class="detailtextrow">
+            <td>Section de classe</td><td>SM II</td>
+        </tr>
+        <tr class="detailtextrow">
+            <td>Trimestre/semestre</td><td>1er trimestre</td>
+        </tr>
+        </tbody>
+
+    </table>
+</div>
+
+</div>
+</div>
+
+
+
+{#    {% if profile.studentsystudents.first %}#}
+{#    <p>{{ profile.studentsystudents.first }}</p>#}
+{#    {% endif %}#}
+
 {% endblock %}

@@ -17,7 +17,7 @@
         <div class="info">
             <div class="firstname">{{ profile.firstname }}</div>
             <div class="lastname">{{ profile.lastname }}</div>
-            <hr style="margin-right: 10px; border-color: rgb(74,92,110)">
+{#            <hr style="margin-right: 10px; border-color: rgb(74,92,110)">#}
             <div class="role">{{ user.role }}</div>
         </div>
     </div>
@@ -46,17 +46,27 @@
             </ul>
         {% elif request.user.user_type == 'SCHOOLADMIN' %}
             <ul>
-                <li>menu9</li>
-                <li>menu10</li>
-                <li>menu11</li>
-                <li>menu12</li>
+
+                <li><a class="active" href=""><i class="fa fas fa-qrcode"></i>Tableau de bord</a></li>
+                <li><a href="#"><i class="fas fa-chalkboard"></i>Classe</a></li>
+                <li><a href="#"><i class="fas fa-note-sticky"></i>Notes</a></li>
+                <li><a href="#"><i class="fas fa-clock"></i>Emploi du temps</a></li>
+                <li><a href="#"><i class="fas fa-info-circle"></i>Info / Messages</a></li>
+                <li><a href="#"><i class="fas fa-list-ol"></i>Resultats</a></li>
+                <li><a href="#"><i class="fas fa-book-open-reader"></i>Bibliothèque</a></li>
+                <li><a href="#"><i class="fas fa-user"></i>Compte</a></li>
             </ul>
         {% elif request.user.user_type == 'ADMIN' %}
             <ul>
-                <li>menu13</li>
-                <li>menu14</li>
-                <li>menu15</li>
-                <li>menu16</li>
+
+                <li><a class="active" href=""><i class="fa fas fa-qrcode"></i>Tableau de bord</a></li>
+                <li><a href="#"><i class="fas fa-chalkboard"></i>Classe</a></li>
+                <li><a href="#"><i class="fas fa-note-sticky"></i>Notes</a></li>
+                <li><a href="#"><i class="fas fa-clock"></i>Emploi du temps</a></li>
+                <li><a href="#"><i class="fas fa-info-circle"></i>Info / Messages</a></li>
+                <li><a href="#"><i class="fas fa-list-ol"></i>Resultats</a></li>
+                <li><a href="#"><i class="fas fa-book-open-reader"></i>Bibliothèque</a></li>
+                <li><a href="#"><i class="fas fa-user"></i>Compte</a></li>
             </ul>
         {% endif %}
     {% endblock %}

@@ -13,7 +13,7 @@ a{
     min-height: 100vh;
     width: 100%;
     display: grid;
-    grid-template-columns: auto 1fr;
+    grid-template-columns: minmax(280px, auto) 1fr;
     grid-template-rows: auto 1fr auto;
     column-gap: 1PX;
 }
@@ -286,7 +286,7 @@ a{
     color: #F1F1F1;
     background-color: #2C3E50;
     font-size: 20px;
-    padding-left: 20px;
+    padding-inline: 20px;
     box-sizing: border-box;
 }
 .aside .menu a:hover{
@@ -340,9 +340,107 @@ a{
     margin: 0;
     color: #2C3E50;
 }
+.content .contentbody {
+    display: flex;
+    align-self: center;
+    column-gap: 20px;
+    padding: 10px;
+    margin: 0;
+
+}
+
 
 /*---------------single page styling ------------*/
+.body-student-home .content .contentgrid{
+    display: grid;
+    width: 100%;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    grid-auto-rows: minmax(50px, auto);
+    grid-column-gap: 20px;
+    padding: 10px;
+}
+.body-student-home .content .contentgrid .card-profile .one{
+    grid-column: 1/2;
+    grid-row: 1/2;
+}
+.body-student-home .content .contentgrid .card-profile .two{
+    grid-column: 2/3;
+    grid-row: 1/2;
+}
 
+
+.body-student-home .card-profile{
+    background-color: #FAF5F5;
+    padding: 10px;
+    border-radius: 5px;
+
+}
+.body-student-home .card-profile .titles{
+
+    font-size: .8rem;
+    font-weight: bold;
+    color: dimgray;
+    padding-bottom: 10px;
+}
+.body-student-home .card-profile .body{
+    box-shadow: 2px 2px 6px 2px rgba(180,180,180,0.1);
+    display: flex;
+    background-color: #FDF8F8;
+    padding: 10px;
+    border-radius: 5px;
+    height: calc(100% - 40px);
+
+
+}
+.body-student-home .wrapperall{
+    width: 120px;
+
+}
+.body-student-home .card-profile .imgwrapper{
+    width: 100px;
+    height: 100px;
+    border: gainsboro 6px solid;
+    border-radius: 50%;
+    overflow: hidden;
+
+}
+.body-student-home .card-profile img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.body-student-home .card-profile i{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+
+}
+.body-student-home .card-profile .detailtext{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+
+}
+
+.body-student-home .card-profile table{
+    width: 100%;
+    color: #373b3e;
+    margin-inline: 10px;
+    margin-bottom: 20px;
+}
+.body-student-home .card-profile table tr{
+    line-height: 2rem;
+    border-bottom: 1px solid rgba(100,100,100,0.1);
+}
+.body-student-home .card-profile table tr td:first-child{
+    font-size: 0.8rem;
+}
+.body-student-home .card-profile table tr td:last-child{
+    padding-left: 2rem;
+    width: 100%;
+}
 
 /* ------------- user auth pages ------------------*/
 

@@ -264,14 +264,16 @@ class Mark(models.Model):
 
 
 class SchoolInfo(models.Model):
+    school_year = models.ForeignKey(SchoolYear, on_delete=models.CASCADE, related_name='schoolyearinfos')
     title = models.CharField(max_length=100, blank=False, null=False, help_text="titre de l'information")
     content = models.TextField(help_text="contenu de l'information")
     author = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     to_all = models.BooleanField()
-    to_level = models.ForeignKey(Level, on_delete=models.CASCADE)
-    to_classroom = models.ForeignKey(Classroom, on_delete=models.CASCADE)
+    to_level = models.ManyToManyField(Level, related_name='levelinfos')
+    to_classroom = models.ManyToManyField(Classroom, related_name='classroominfos')
     created_at = models.DateTimeField(auto_now_add=True)
-    is_active = models.BooleanField()
+    updated_at = models.DateTimeField(auto_now=True)
+    is_published = models.BooleanField(default=False)
 
 
 class MonthlySchedule(models.Model):
@@ -304,6 +306,13 @@ class TimeTable(models.Model):
 
     def __str__(self):
         return f'{self.schedule}-{self.day}-{self.start_time}-{self.end_time}-{self.classroom}'
+    @property
+    def taught_by(self):
+        if self.subject.teacher:
+            return self.subject.teacher.teacher.name_with_tile
+        else:
+            return '-'
+
 
 
 

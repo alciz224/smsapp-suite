@@ -52,4 +52,11 @@ class Teacher(People):
     def __str__(self):
         return f'{self.firstname} {self.lastname}'
 
+    @property
+    def name_with_tile(self):
+        if self.gender == 1:
+            return f'M. {self.firstname} {self.lastname}'
+        elif self.gender == 0:
+            return f'Mme. {self.firstname} {self.lastname}'
+
 
