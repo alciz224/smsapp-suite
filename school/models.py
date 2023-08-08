@@ -189,6 +189,9 @@ class Subject(models.Model):
 
     def __str__(self):
         return self.name.name.name
+    @property
+    def getname(self):
+        return self.name.name.name
 
     def clean(self):
         if self.name.level.name != self.classroom.name.level.name:
@@ -301,8 +304,8 @@ class TimeTable(models.Model):
     start_time = models.TimeField()
     end_time = models.TimeField()
     day = models.CharField(max_length=50, choices=DAYS, null=False, blank=False)
-    subject = models.ForeignKey(Subject, on_delete=models.CASCADE, related_name='subjecttimetables', editable=True)
-    classroom = models.ForeignKey(Classroom, on_delete=models.CASCADE, related_name='classroomtimetables')
+    subject = models.ForeignKey(Subject, on_delete=models.CASCADE, related_name='timetables', editable=True)
+    classroom = models.ForeignKey(Classroom, on_delete=models.CASCADE, related_name='timetables')
 
     def __str__(self):
         return f'{self.schedule}-{self.day}-{self.start_time}-{self.end_time}-{self.classroom}'

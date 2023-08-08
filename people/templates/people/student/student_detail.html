@@ -1,22 +1,43 @@
 {% extends 'people/app_base.html' %}
 {% block content_body %}
-    <h4>Student Detail</h4>
-    <div>
-    <p>photo</p>
-    {% if student.image %}
-        <img src="{{ student.image.url }}" alt="photo">
-        {% else %}
-        <img src="" alt="photo here">
-    {% endif %}
+    <div class="container"><div class="row">
+        <a href=""><i class="fas fa-left-long"></i> retour</a>
+    <div class="container col-12 card pt-2">
+    <div class="row ">
+        <div class="col-12 ">Profile</div>
+        <hr class="px-2 border-dark">
+        <div class="imgwrapper col-3">
+            {% if student.image %}
+                <img class="card-img" src="{{ student.image.url }}" alt="photo">
+            {% else %}
+                <img src="" alt="photo here">
+            {% endif %}
+            <a class="btn btn-primary-outline m-3" href="{% url 'student_update' student.pk %}">modifer la photo</a>
+        </div>
+        <div class="col-9">
+            <div class="row">
+                <p class="col-3">Prénom</p><p class="col-9">{{ student.firstname }}</p>
+                <p class="col-3">Nom</p><p class="col-9">{{ student.lastname }}</p>
+                <p class="col-3">sexe</p><p class="col-9">{{ student.gender }}</p>
+                <p class="col-3">age</p><p class="col-9">{{ student.age }}</p>
+                <p class="col-3">téléphone</p><p class="col-9">{{ student.telephone }}</p>
+                <p class="col-3">email</p><p class="col-9">{{ student.email }}</p>
+            </div>
+        </div>
+    <br>
+    <br>
     </div>
-    <div><p>Prénom</p><p>{{ student.firstname }}</p</div>
-    <div><p>Nom</p><p>{{ student.lastname }}</p</div>
-    <div><p>sexe</p><p>{{ student.gender }}</p</div>
-    <div><p>age</p><p>{{ student.age }}</p</div>
-    <div><p>téléphone</p><p>{{ student.telephone }}</p</div>
-    <div><p>email</p><p>{{ student.email }}</p</div>
-    <br>
-    <br>
-    <a href="{% url 'student_update' student.pk %}">modifer la photo</a>
-
+    </div>
+    <div class="container card col-12 mt-2 py-2">
+        <div class="row">
+            <p class="col-12 py-2">compte</p>
+                <div class="row col-12 py-2">
+                    <div class="col-3">Type de compte:</div><div class="col-3">{{ request.user.user_type|lower|capfirst}}</div>
+                </div>
+            <a class="link col-4 py-2" href=""><i class="fas fa-lock"></i>  changer le mot de passe</a>
+            <a class="link col-4 py-2 border-start-1" href=""><i class="fas fa-lock"></i>  changer le mot de passe</a>
+            <a class="link col-4 py-2" href=""><i class="fas fa-lock"></i>  changer le mot de passe</a>
+        </div>
+    </div>
+</div></div>
 {% endblock %}

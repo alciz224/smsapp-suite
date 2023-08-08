@@ -14,7 +14,7 @@
 <div class="body">
 <div class="wrapperall">
     <div class="imgwrapper">
-        {% if profile.image.url %}
+        {% if profile.image %}
             <img src="{{ profile.image.url }}" alt="">
         {% else %}
             <i class="fas fa-user"></i>
@@ -77,7 +77,7 @@
 
 </div>
 </div>
-
+    <a href="{% url 'student_detail' profile.pk %}">profile</a>
 
 
 {#    {% if profile.studentsystudents.first %}#}

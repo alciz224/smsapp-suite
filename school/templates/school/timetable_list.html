@@ -46,15 +46,82 @@
     </div>
 </form>
 </div>
+
 </div>
 </div>
 
 
 {% endblock %}
 {% block content_body %}
-        <a href="{% url 'timetable_creat' %}">Add Timetable</a>
-    {% for hor in object_list %}
-    <p>{{ hor.schedule }}-{{ hor.day }}-{{ hor.start_time }}-{{ hor.end_time }}-{{ hor.classroom }}</p>
-    {% endfor %}
+
+{#    {% for hor in object_list %}#}
+{#    <p>{{ hor.schedule }}-{{ hor.day }}-{{ hor.start_time }}-{{ hor.end_time }}-{{ hor.classroom }}</p>#}
+{#    {% endfor %}#}
+    <table class="table table-stripped">
+        <thead>
+            <tr>
+                <th>Lundi</th>
+                <th>Mardi</th>
+                <th>Mercredi</th>
+                <th>Jeudi</th>
+                <th>Vendredi</th>
+                <th>Samedi</th>
+                <th>Dimanche</th>
+            </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>
+                {% for sub in monday %}
+                    <small>{{ sub.start_time|time:"H:i" }} - {{ sub.end_time|time:"H:i" }}</small>
+                    <p>{{ sub.subject }}</p>
+                {% endfor %}
+            </td>
+            <td>
+                {% for sub in tuesday %}
+                    <small>{{ sub.start_time|time:"H:i" }} - {{ sub.end_time|time:"H:i" }}</small>
+                    <p>{{ sub.subject }}</p>
+                {% endfor %}
+            </td>
+            <td>
+                {% for sub in wednesday %}
+                    <small>{{ sub.start_time|time:"H:i" }} - {{ sub.end_time|time:"H:i" }}</small>
+                    <p>{{ sub.subject }}</p>
+                {% endfor %}
+            </td>
+            <td>
+                {% for sub in thursday %}
+                    <small>{{ sub.start_time|time:"H:i" }} - {{ sub.end_time|time:"H:i" }}</small>
+                    <p>{{ sub.subject }}</p>
+                {% endfor %}
+            </td>
+            <td>
+                {% for sub in friday %}
+                    <small>{{ sub.start_time|time:"H:i" }} - {{ sub.end_time|time:"H:i" }}</small>
+                    <p>{{ sub.subject }}</p>
+                {% endfor %}
+            </td>
+            <td>
+                {% for sub in friday %}
+                    <small>{{ sub.start_time|time:"H:i" }} - {{ sub.end_time|time:"H:i" }}</small>
+                    <p>{{ sub.subject }}</p>
+                {% endfor %}
+            </td>
+            <td>
+                {% for sub in saturday %}
+                    <small>{{ sub.start_time|time:"H:i" }} - {{ sub.end_time|time:"H:i" }}</small>
+                    <p>{{ sub.subject }}</p>
+                {% endfor %}
+            </td>
+            <td>
+                {% for sub in sunday %}
+                    <small>{{ sub.start_time|time:"H:i" }} - {{ sub.end_time|time:"H:i" }}</small>
+
+                    <p>{{ sub.subject }}</p>
+                {% endfor %}
+            </td>
+        </tr>
+        </tbody>
+    </table>
 
 {% endblock %}

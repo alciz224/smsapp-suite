@@ -13,14 +13,13 @@ a{
     min-height: 100vh;
     width: 100%;
     display: grid;
-    grid-template-columns: minmax(280px, auto) 1fr;
+    grid-template-columns: minmax(240px, auto) 1fr;
     grid-template-rows: auto 1fr auto;
     column-gap: 1PX;
 }
 .brand{
     background-color: teal;
     display: flex;
-
     grid-area: 1/1/2/2;
     align-items: center;
     justify-content: center;
@@ -285,7 +284,7 @@ a{
     line-height: 50px;
     color: #F1F1F1;
     background-color: #2C3E50;
-    font-size: 20px;
+    font-size: 1rem;
     padding-inline: 20px;
     box-sizing: border-box;
 }
