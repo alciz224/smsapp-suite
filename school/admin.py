@@ -2,7 +2,7 @@ from django.contrib import admin
 
 # Register your models here.
 from school.models import School, SchoolYear, Level, LevelChoice, ClassroomList, ClassroomChoice, Classroom, \
-    SubjectList, SubjectChoice, Subject, Year, SchoolYearStudent, SchoolYearTeacher, MarkType, Mark, TimeTable
+    SubjectList, SubjectChoice, Subject, Year, SchoolYearStudent, SchoolYearTeacher, MarkType, Mark, TimeTable, MonthlySchedule, TimeSlot
 
 
 class SchoolAdmin(admin.ModelAdmin):
@@ -63,9 +63,15 @@ class MarkTypeAdmin(admin.ModelAdmin):
 
 class MarkAdmin(admin.ModelAdmin):
     list_display = ['student', 'subject', 'mark_type', 'mark1_d', 'mark2_d']
+    
+class MonthlyScheduleAdmin(admin.ModelAdmin):
+    list_display= ['name', 'school', 'is_current']
+    
+class TimeSlotAdmin(admin.ModelAdmin):
+    list_display = ['name', 'schedule',  'start_time', 'end_time']
 
 class TimeTableAdmin(admin.ModelAdmin):
-    list_display = ['day', 'start_time', 'end_time', 'subject', 'classroom']
+    list_display = ['day', 'subject', 'classroom']
 
 
 
@@ -86,3 +92,5 @@ admin.site.register(Year, YearAdmin)
 admin.site.register(SchoolYearStudent, SchoolYearStudentAdmin)
 admin.site.register(SchoolYearTeacher, SchoolYearTeacherAdmin)
 admin.site.register(TimeTable, TimeTableAdmin)
+admin.site.register(MonthlySchedule, MonthlyScheduleAdmin)
+admin.site.register(TimeSlot, TimeSlotAdmin)

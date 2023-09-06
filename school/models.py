@@ -288,6 +288,35 @@ class MonthlySchedule(models.Model):
 
     def __str__(self):
         return self.name
+        
+        
+
+class TimeSlot(models.Model):
+    schedule= models.ForeignKey(MonthlySchedule, on_delete=models.CASCADE)
+    name = models.CharField(max_length=100)
+    start_time = models.TimeField()
+    end_time = models.TimeField()
+    
+    class Meta:
+        unique_together=['schedule', 'name']
+
+    def clean(self):
+        # Check for time overlap with existing timeslots
+        overlapping_timeslots = TimeSlot.objects.filter(
+            start_time__lt=self.end_time,
+            end_time__gt=self.start_time,
+        ).exclude(pk=self.pk)
+
+        if overlapping_timeslots.exists():
+            raise ValidationError("Timeslot overlaps with existing timeslots.")
+
+    def save(self, *args, **kwargs):
+        self.full_clean()
+        super(TimeSlot, self).save(*args, **kwargs)
+
+    def __str__(self):
+        return f"{self.name}-{self.start_time} - {self.end_time}"
+
 
 
 class TimeTable(models.Model):
@@ -301,11 +330,13 @@ class TimeTable(models.Model):
         ('DIMANCHE', 'Dimanche'),
     )
     schedule = models.ForeignKey(MonthlySchedule, on_delete=models.CASCADE)
-    start_time = models.TimeField()
-    end_time = models.TimeField()
+    timeslot = models.ForeignKey(TimeSlot, on_delete=models.CASCADE)
     day = models.CharField(max_length=50, choices=DAYS, null=False, blank=False)
     subject = models.ForeignKey(Subject, on_delete=models.CASCADE, related_name='timetables', editable=True)
-    classroom = models.ForeignKey(Classroom, on_delete=models.CASCADE, related_name='timetables')
+    classroom = models.ForeignKey(Classroom, on_delete=models.CASCADE, related_name='timetables', editable=True)
+    
+    class Meta:
+        unique_together = ['schedule', 'day', 'timeslot']
 
     def __str__(self):
         return f'{self.schedule}-{self.day}-{self.start_time}-{self.end_time}-{self.classroom}'
