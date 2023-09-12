@@ -1,0 +1,27 @@
+{% extends 'common.html' %}
+{% block body %}
+<div>
+{{ profile }}
+</div>
+    {% if error_message %}
+        <p>{{ error_message }}</p>
+    {% endif %}
+
+    {% if current_year_student %}
+    <div>{{ current_year_student }}</div>
+    {% endif %}
+    <div>{{ next }}</div>
+    <p>formulaire</p>
+    <div>
+        <form method="post">
+        {% csrf_token %}
+            <select name="school_year" id="selectschoolyear">
+            <option value="">----selectionner----</option>
+            {% for year in schoolyears %}
+                <option value="{{ year.id }}">{{ year }}</option>
+            {% endfor %}
+            </select>
+        <button type="submit">Validé</button>
+        </form>
+    </div>
+{% endblock %}

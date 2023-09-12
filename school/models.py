@@ -159,6 +159,13 @@ class SchoolYearStudent(models.Model):
     classroom = models.ForeignKey(Classroom, on_delete=models.CASCADE)
     has_promotion = models.BooleanField()
 
+    class Meta:
+        unique_together = ['student', 'level']
+
+    def clean(self):
+        if self.classroom.level != self.level:
+            raise ValidationError('ne correspond pas')
+
     def __str__(self):
         return self.student.firstname
 
