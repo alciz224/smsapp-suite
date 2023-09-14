@@ -47,6 +47,7 @@ class Student(People):
 
 
 class Teacher(People):
+    subjects = models.ManyToManyField('school.SubjectList', related_name='teachers')
 
 
     def __str__(self):

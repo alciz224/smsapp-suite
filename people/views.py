@@ -18,7 +18,7 @@ class SchoolYearSelect(UserInfoMixin, TemplateView):
         school_year = int(request.POST.get('school_year'))
         context = self.get_context_data()
         link = request.session.get('next', '/')
-        if school_year in list(context['schoolyears'].values_list('id', flat=True)):
+        if school_year in list(context['school_years'].values_list('id', flat=True)):
             print('ok')
             request.session['school_year'] = school_year
             return HttpResponseRedirect(link)
@@ -33,7 +33,7 @@ class SchoolYearSelect(UserInfoMixin, TemplateView):
 
 #---------------------STUDENT VIEWS---------------------
 
-class StudentHomeView(UserInfoMixin, TemplateView):
+class StudentHomeView(UserInfoMixin, UserPassesTestMixin, TemplateView):
     def dispatch(self, request, *args, **kwargs):
         school_year = request.session.get("school_year")
         link = request.get_full_path()
@@ -48,9 +48,15 @@ class StudentHomeView(UserInfoMixin, TemplateView):
         context['school_year']  = self.request.session.get('school_year')
         return context
 
+    def test_func(self):
+        return self.request.user.is_authenticated and self.request.user.user_type == 'STUDENT'
+
+    def handle_no_permission(self):
+        return HttpResponse('Heeee Petit Curieux tu vas ou? retournes-toi!!!!')
+
     template_name = 'people/student/student_home.html'
 
-class StudentDetailView(UserInfoMixin, DetailView):
+class StudentDetailView(UserInfoMixin, UserPassesTestMixin, DetailView):
     model = Student
     context_object_name = 'student'
     template_name = 'people/student/student_detail.html'
@@ -60,7 +66,7 @@ class StudentDetailView(UserInfoMixin, DetailView):
         return self.request.user.is_authenticated and self.request.user.user_type == 'STUDENT'
 
     def handle_no_permission(self):
-        return HttpResponse('access denied!!!!')
+        return HttpResponse('Heeee Petit Curieux tu vas ou? retournes-toi!!!!')
 
 
 class StudentUpdateView(UserInfoMixin, UserPassesTestMixin, UpdateView):
@@ -73,9 +79,13 @@ class StudentUpdateView(UserInfoMixin, UserPassesTestMixin, UpdateView):
         return self.request.user.is_authenticated and self.request.user.user_type == 'STUDENT'
 
     def handle_no_permission(self):
-        return HttpResponse('access denied!!!!')
+        return HttpResponse('Heeee Petit Curieux tu vas ou? retournes-toi!!!!')
 
-class StudentClassroomView(UserInfoMixin, TemplateView):
+class StudentClassroomView(UserInfoMixin, UserPassesTestMixin,  TemplateView):
+
+    context_object_name = 'classroom'
+    template_name = 'people/student/student_classroom.html'
+    success_url = reverse_lazy('student_home')
     def get_queryset(self):
         context = self.get_context_data()
         stud = context['current_year_student']
@@ -83,18 +93,38 @@ class StudentClassroomView(UserInfoMixin, TemplateView):
         queryset = Classroom.objects.get(id=classroom)
         return queryset
 
-    context_object_name = 'classroom'
-    template_name = 'people/student/student_classroom.html'
-    success_url = reverse_lazy('student_home')
+    def test_func(self):
+        return self.request.user.is_authenticated and self.request.user.user_type == 'STUDENT'
+
+    def handle_no_permission(self):
+        return HttpResponse('Heeee Petit Curieux tu vas ou? retournes-toi!!!!')
+
+
 
 #-----------------TEACHER VIEWS----------------------------------
-class TeacherHomeView(UserInfoMixin,TemplateView):
+class TeacherHomeView(UserInfoMixin, UserPassesTestMixin, TemplateView):
+
+    def dispatch(self, request, *args, **kwargs):
+        school_year = request.session.get("school_year")
+        link = request.get_full_path()
+        if school_year is None:
+            request.session['next'] = link
+            return redirect("schoolyearselect")
+
+        return super().dispatch(request, *args, **kwargs)
+
+    def test_func(self):
+        return self.request.user.is_authenticated and self.request.user.user_type == 'TEACHER'
+
+    def handle_no_permission(self):
+        return HttpResponse('Heeee Petit Curieux tu vas ou? retournes-toi!!!!')
+
     template_name = 'people/teacher/teacher_home.html'
 
-class TeacherDetailView(UserInfoMixin,TemplateView):
+class TeacherDetailView(UserInfoMixin, UserPassesTestMixin, TemplateView):
     template_name = 'people/teacher/teacher_detail.html'
 
-class TeacherUpdateView(UserInfoMixin,TemplateView):
+class TeacherUpdateView(UserInfoMixin,UserPassesTestMixin, TemplateView):
     template_name = 'people/teacher/teacher_update.html'
 
 

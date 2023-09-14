@@ -1,0 +1,12 @@
+{% extends 'common.html' %}
+{% block body %}
+    <div class="d-flex justify-content-around">
+        <a class="link-primary" href="{% url 'user_login' %}">se connecter</a>
+        <a class="link-primary" href="{% url 'user_create' %}">s'inscrire</a>
+        <a class="link-primary" href="{% url 'home_redirect' %}">Mon espace</a>
+    </div>
+
+    <p class="card-header border-light-subtle bg-success">
+    {{ home }}
+    </p>
+{% endblock %}

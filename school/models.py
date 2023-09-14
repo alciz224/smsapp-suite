@@ -40,7 +40,7 @@ class Year(models.Model):
         return f'{self.start_year} - {self.end_year}'
 
 class SchoolYear(models.Model):
-    school = models.ForeignKey(School, on_delete=models.CASCADE)
+    school = models.ForeignKey(School, on_delete=models.CASCADE, related_name='years')
     year = models.ForeignKey(Year, on_delete=models.CASCADE)
     is_active = models.BooleanField(default=True)
 
@@ -171,9 +171,13 @@ class SchoolYearStudent(models.Model):
 
 
 class SchoolYearTeacher(models.Model):
-    teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE)
+
+    teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE, related_name='teachers')
     school_year = models.ForeignKey(SchoolYear, on_delete=models.CASCADE)
     subject_taught = models.ManyToManyField(SubjectList)
+
+    class Meta:
+        unique_together = ['teacher', 'school_year']
 
 
 

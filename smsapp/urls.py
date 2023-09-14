@@ -19,10 +19,11 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
 from . import views
-from smsapp.views import HomeRedirectView
+from smsapp.views import HomeRedirectView, HomeView
 
 urlpatterns = [
-    path('', HomeRedirectView.as_view(), name='home_redirect'),
+    path('', HomeView.as_view(), name='home'),
+    path('redirect', HomeRedirectView.as_view(), name='home_redirect'),
     path('', include('people.urls')),
     path('admin/', admin.site.urls),
     path('', include('user.urls')),

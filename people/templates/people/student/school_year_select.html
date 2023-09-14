@@ -17,7 +17,7 @@
         {% csrf_token %}
             <select name="school_year" id="selectschoolyear">
             <option value="">----selectionner----</option>
-            {% for year in schoolyears %}
+            {% for year in school_years %}
                 <option value="{{ year.id }}">{{ year }}</option>
             {% endfor %}
             </select>

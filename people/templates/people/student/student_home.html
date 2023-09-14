@@ -26,22 +26,22 @@
         <tbody>
         <tr class="detailtextrow">
             <td>Prénom</td>
-            <td>Aly</td>
+            <td>{{ profile.firstname }}</td>
         </tr>
         <tr class="detailtextrow">
-            <td>Nom</td><td>cissé</td>
+            <td>Nom</td><td>{{ profile.lastname }}</td>
         </tr>
         <tr class="detailtextrow">
-            <td>Sexe</td><td>masculin</td>
+            <td>Sexe</td><td>{{ profile.get_gender_display }}</td>
         </tr>
         <tr class="detailtextrow">
-            <td>Age</td><td>20 ans</td>
+            <td>Age</td><td>{{ profile.age }}</td>
         </tr>
         <tr class="detailtextrow">
-            <td>Téléphone</td><td>669004506</td>
+            <td>Téléphone</td><td>{{ profile.telephone }}</td>
         </tr>
         <tr class="detailtextrow">
-            <td>Email</td><td>cisse@gmail.com</td>
+            <td>Email</td><td>{{ profile.email }}</td>
         </tr>
         </tbody>
 
@@ -50,7 +50,7 @@
 
 </div>
  <div class="card-profile two">
-<div class="titles">Info scolaire 2023-2024</div>
+<div class="titles">Info scolaire {{ school_year }}</div>
 <div class="body">
     <table class="detailtext">
         <tbody>
