@@ -37,7 +37,7 @@
 
                 <li><a class="active" href=""><i class="fa fas fa-qrcode"></i>Tableau de bord</a></li>
                 <li><a href="{% url 'student_classroom' %}"><i class="fas fa-chalkboard"></i>Classe</a></li>
-                <li><a href="#"><i class="fas fa-note-sticky"></i>Notes</a></li>
+                <li><a href="{% url 'student_marks' %}"><i class="fas fa-note-sticky"></i>Notes</a></li>
                 <li><a href="#"><i class="fas fa-clock"></i>Emploi du temps</a></li>
                 <li><a href="#"><i class="fas fa-info-circle"></i>Info / Messages</a></li>
                 <li><a href="#"><i class="fas fa-list-ol"></i>Resultats</a></li>
@@ -75,7 +75,7 @@
 {% block content %}
     <div class="contenthead">
     {% if request.user.user_type == 'STUDENT' %}
-        <div class="nav"><div class="pagetitle"><i class="fas fa-home"></i>
+        <div class="nav"><div class="pagetitle"><a href="{% url 'home_redirect' %}"><i class="fas fa-home"></i></a>
     {% block pagetitle %}{% endblock %}</div><div>session:</div><small>2023-2024</small></div>
     {% endif %}
         {% block content_head %}{% endblock %}</div>

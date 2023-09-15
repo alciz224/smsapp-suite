@@ -1,0 +1,56 @@
+{% extends 'people/app_base.html' %}
+{% block content_body %}
+
+    <div class="container-fluid col-6">
+    <h4>Mes notes de cours de compos</h4>
+    <hr>
+{% for typ in mark_types_data %}
+    <div class="card">
+    <div class="card-header">
+        <p class="card-title">{{ typ.mark_type }}</p>
+    </div>
+    <div class="card-body">
+    <table class="table table-striped" id="data-table">
+
+        <thead>
+            <tr>
+                <th>Matières</th>
+                <th>Cours</th>
+                <th>Compos</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for mark in typ.items %}
+            <tr>
+                <td>{{ mark.subject }}</td>
+                <td>
+                    {% if mark.mark1 %}
+                        {{ mark.mark1 }}
+                    {% else %}
+                        -
+                    {% endif %}
+                </td>
+                <td>
+                    {% if mark.mark2 %}
+                        {{ mark.mark2 }}
+                    {% else %}
+                        -
+                    {% endif %}
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+            <td colspan="3">pas de notes à afficher!!!</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    </div>
+    </div>
+    <hr>
+    <br>
+{% endfor %}
+
+    {% endblock %}
+</div>

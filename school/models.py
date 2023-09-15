@@ -167,7 +167,7 @@ class SchoolYearStudent(models.Model):
             raise ValidationError('ne correspond pas')
 
     def __str__(self):
-        return self.student.firstname
+        return self.student.firstname +' '+self.student.lastname
 
 
 class SchoolYearTeacher(models.Model):
@@ -188,7 +188,7 @@ class Subject(models.Model):
 
     name = models.ForeignKey(SubjectChoice, on_delete=models.CASCADE)
     level = models.ForeignKey(Level, on_delete=models.CASCADE)
-    classroom = models.ForeignKey(Classroom, on_delete=models.CASCADE)
+    classroom = models.ForeignKey(Classroom, on_delete=models.CASCADE, related_name='subjects')
     coef = models.IntegerField(null=False, default=1)
     teacher = models.ForeignKey(SchoolYearTeacher, on_delete=models.SET_NULL, null=True, blank=True, editable=True,
                                 related_name='teachersubjects')
@@ -212,7 +212,7 @@ class Subject(models.Model):
 
 
 class MarkType(models.Model):
-    level = models.ForeignKey(Level, on_delete=models.CASCADE, related_name='levelmarks')
+    level = models.ForeignKey(Level, on_delete=models.CASCADE, related_name='marktypes')
     name = models.CharField(max_length=50)
     max_mark = models.DecimalField(max_digits=5, decimal_places=2, default=20)
     is_active = models.BooleanField(default=False)

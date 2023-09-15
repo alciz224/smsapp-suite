@@ -1,6 +1,36 @@
 {% extends 'people/app_base.html' %}
 {% block content_body %}
-    <p>
-    {{ classroom}}
-    </p>
+    <div>
+    <h3>{{ classroom}}</h3>
+
+    <div>
+    <p>garcons: {{ classroom.get_male_count }}</p>
+    <p>filles: {{ classroom.get_female_count }}</p>
+    <p>garcon: {{ classroom.get_student_count }}</p>
+    </div>
+    <div>
+    <h3>
+        Liste des élèves
+    </h3>
+        <hr>
+    <ul>
+        {% for student in classroom.schoolyearstudent_set.all %}
+            <li>{{ student }}</li>
+            <hr>
+        {% endfor %}
+    </ul>
+    </div>
+    <h3>Liste des Matières</h3>
+     <hr>
+    <ul>
+    {% for sub in classroom.subjects.all %}
+        <li>
+            <h4>{{ sub }}</h4>
+            <p>Coéfficient: {{ sub.coef }}</p>
+            <p>dispensé par: {{ sub.teacher }}</p>
+            <hr>
+        </li>
+    {% endfor %}
+    </ul>
+    </div>
 {% endblock %}

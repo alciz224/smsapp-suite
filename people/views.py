@@ -1,15 +1,16 @@
 from django.contrib.auth.mixins import UserPassesTestMixin
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import render, redirect
 
 # Create your views here.
+from django.template.loader import render_to_string
 from django.urls import reverse, reverse_lazy
-from django.views.generic import UpdateView, DetailView, TemplateView
+from django.views.generic import UpdateView, DetailView, TemplateView, ListView
 
 from people.forms import ProfileForm
 from people.mixins import UserInfoMixin
 from people.models import Student
-from school.models import SchoolYear, Classroom
+from school.models import SchoolYear, Classroom, Mark, SchoolYearStudent
 
 
 class SchoolYearSelect(UserInfoMixin, TemplateView):
@@ -44,8 +45,8 @@ class StudentHomeView(UserInfoMixin, UserPassesTestMixin, TemplateView):
         return super().dispatch(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
-        context=super().get_context_data(**kwargs)
-        context['school_year']  = self.request.session.get('school_year')
+        context = super().get_context_data(**kwargs)
+        context['school_year'] = self.request.session.get('school_year')
         return context
 
     def test_func(self):
@@ -86,12 +87,63 @@ class StudentClassroomView(UserInfoMixin, UserPassesTestMixin,  TemplateView):
     context_object_name = 'classroom'
     template_name = 'people/student/student_classroom.html'
     success_url = reverse_lazy('student_home')
-    def get_queryset(self):
-        context = self.get_context_data()
-        stud = context['current_year_student']
-        classroom = stud.classroom.id
-        queryset = Classroom.objects.get(id=classroom)
-        return queryset
+
+    def dispatch(self, request, *args, **kwargs):
+        school_year = request.session.get("school_year")
+        link = request.get_full_path()
+        if school_year is None:
+            request.session['next'] = link
+            return redirect("schoolyearselect")
+
+        return super().dispatch(request, *args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        student = context.get('current_year_student')
+        classroom = Classroom.objects.get(id=student.classroom.id)
+        subjects = classroom.subjects.all()
+        context['classroom'] = classroom
+        return context
+
+    def test_func(self):
+        return self.request.user.is_authenticated and self.request.user.user_type == 'STUDENT'
+
+    def handle_no_permission(self):
+        return HttpResponse('Heeee Petit Curieux tu vas ou? retournes-toi!!!!')
+
+class StudentMarksView(UserInfoMixin, UserPassesTestMixin,  TemplateView):
+
+    template_name = 'people/student/student_marks.html'
+    success_url = reverse_lazy('student_marks')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        profile = Student.objects.get(user=self.request.user)
+        school_year = self.request.session.get('school_year')
+        student = SchoolYearStudent.objects.get(level_id=school_year, student=profile)
+        mark_types = Mark.objects.filter(student=student).values('mark_type__name').distinct()
+        mark_types_data = []
+        for mark_type in mark_types:
+            items_in_mark_type = Mark.objects.filter(student=student, mark_type__name=mark_type['mark_type__name'])
+            mark_types_data.append({'mark_type': mark_type['mark_type__name'], 'items': items_in_mark_type})
+        print(mark_types_data)
+        context['mark_types_data'] = mark_types_data
+        return context
+
+
+
+    # def get_queryset(self):
+    #
+    #     mark_type = self.request.POST.get('mark_type')
+    #     if mark_type:
+    #         queryset.filter(mark_type=mark_type)
+    #     print(student)
+    #     print(queryset)
+    #     return queryset
+
+
+
+
 
     def test_func(self):
         return self.request.user.is_authenticated and self.request.user.user_type == 'STUDENT'
@@ -156,7 +208,7 @@ class AdminHomeView(UserInfoMixin,TemplateView):
         return super().dispatch(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
-        context=super().get_context_data(**kwargs)
+        context = super().get_context_data(**kwargs)
         context['school_year']=self.request.session.get('school_year')
         return context
     template_name = 'people/schooladmin/school_admin_home.html'

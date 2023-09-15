@@ -1,0 +1,34 @@
+<table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Matières</th>
+                <th>Cours</th>
+                <th>Compos</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for mark in marks %}
+            <tr>
+                <td>{{ mark.subject }}</td>
+                <td>
+                    {% if mark.mark1 %}
+                        {{ mark.mark1 }}
+                    {% else %}
+                        pas de note
+                    {% endif %}
+                </td>
+                <td>
+                    {% if mark.mark2 %}
+                        {{ mark.mark2 }}
+                    {% else %}
+                        pas de note
+                    {% endif %}
+                </td>
+            </tr>
+        {% empty %}
+            <tr>
+                <td colspan="3">Pas de note</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+</table>
