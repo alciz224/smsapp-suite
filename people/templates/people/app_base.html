@@ -6,24 +6,33 @@
     {% endif %}
 {% endblock %}
 {% block aside %}
-    <div class="profile-card">
-        <div class="image-wrapper">
+    <div class="d-flex text-end w-100 justify-content-end">
+        <i class="fa fa-times text-white-50 d-lg-none p-1 border rounded mx-2"></i>
+    </div>
+
+    <div class="card bg-transparent">
+        <div class="card-body px-5 pb-1">
             {% if profile.image %}
-                <img src="{{ profile.image.url }}" alt="">
+                <img class="card-img rounded-3" src="{{ profile.image.url }}" alt="">
             {% else %}
                 <img src="" alt="profile pic">
             {% endif %}
         </div>
-        <div class="info">
-            <div class="firstname">{{ profile.firstname }}</div>
-            <div class="lastname">{{ profile.lastname }}</div>
-{#            <hr style="margin-right: 10px; border-color: rgb(74,92,110)">#}
-            <div class="role">{{ user.role }}</div>
+        <div class="card-footer">
+            <div class="card-text">
+            <div class="firstname text-light text-center fw-normal">@{{ request.user }}</div>
+            <div class="d-flex justify-content-between px-3">
+                <div class="role text-white-50 text-center fw-light small">{{ user.role|lower }}</div>
+                <a href="{% url 'student_detail' profile.pk %}">
+                    <div>profile</div>
+                </a>
+            </div>
         </div>
+        </div>
+
     </div>
     <div class="menu">
-        <hr style="margin-right: 10px; border-color: rgb(74,92,110)">
-    <div style="text-align: center;">menu</div>
+        <div class="text-white-50 pb-2 text-center">menu</div>
     {% block menu %}
         {% if request.user.user_type == 'TEACHER' %}
             <ul>
@@ -34,7 +43,6 @@
             </ul>
         {% elif request.user.user_type == 'STUDENT' %}
             <ul>
-
                 <li><a class="active" href=""><i class="fa fas fa-qrcode"></i>Tableau de bord</a></li>
                 <li><a href="{% url 'student_classroom' %}"><i class="fas fa-chalkboard"></i>Classe</a></li>
                 <li><a href="{% url 'student_marks' %}"><i class="fas fa-note-sticky"></i>Notes</a></li>
@@ -76,13 +84,9 @@
     <div class="contenthead">
     {% if request.user.user_type == 'STUDENT' %}
         <div class="nav"><div class="pagetitle"><a href="{% url 'home_redirect' %}"><i class="fas fa-home"></i></a>
-    {% block pagetitle %}{% endblock %}</div><div>session:</div><small>2023-2024</small></div>
+    {% block pagetitle %}{% endblock %}</div>
+            <div>session:</div><small>2023-2024</small></div>
     {% endif %}
         {% block content_head %}{% endblock %}</div>
-    <div class="contentbody">{% block content_body %}{% endblock %}</div>
-{% endblock %}
-{% block footer %}
-    <div class="container">
-    <h2>footer</h2>
-    </div>
+    <div class="contentbody w-100">{% block content_body %}{% endblock %}</div>
 {% endblock %}

@@ -135,7 +135,7 @@ class Classroom(models.Model):
             return super(Classroom, self).save(*args, **kwargs)
 
     def __str__(self):
-        return f'{self.name.__str__()} {self.section}'
+        return f'{self.name} {self.section}'
 
     def get_student_count(self):
         return self.schoolyearstudent_set.count()
@@ -164,7 +164,7 @@ class SchoolYearStudent(models.Model):
 
     def clean(self):
         if self.classroom.level != self.level:
-            raise ValidationError('ne correspond pas')
+            raise ValidationError('Level mismatch!!!')
 
     def __str__(self):
         return self.student.firstname +' '+self.student.lastname
@@ -191,7 +191,7 @@ class Subject(models.Model):
     classroom = models.ForeignKey(Classroom, on_delete=models.CASCADE, related_name='subjects')
     coef = models.IntegerField(null=False, default=1)
     teacher = models.ForeignKey(SchoolYearTeacher, on_delete=models.SET_NULL, null=True, blank=True, editable=True,
-                                related_name='teachersubjects')
+                                related_name='subjects')
 
     class Meta:
         unique_together = ['name', 'classroom']
@@ -229,18 +229,21 @@ class Mark(models.Model):
     student = models.ForeignKey(SchoolYearStudent, on_delete=models.CASCADE, related_name='studentmarks')
     subject = models.ForeignKey(Subject, on_delete=models.CASCADE, related_name='subjectmarks')
     mark_type = models.ForeignKey(MarkType, on_delete=models.CASCADE, related_name='marktypemarks')
+    mark1 = models.FloatField(null=True, blank=True, validators=[MinValueValidator(0), MaxValueValidator(20)])
+    mark2 = models.FloatField(null=True, blank=True, validators=[MinValueValidator(0), MaxValueValidator(20)])
+    updated_by = models.ForeignKey(Teacher, on_delete=models.CASCADE, null=True, blank=True,
+                                   related_name='updatedmarks')
+    # mark1 = models.DecimalField(max_digits=4,
+    #                             decimal_places=2,
+    #                             null=True,
+    #                             blank=True,
+    #                             validators=[MinValueValidator(0), MaxValueValidator(20)])
+    # mark2 = models.DecimalField(max_digits=4,
+    #                             decimal_places=2,
+    #                             null=True,
+    #                             blank=True,
+    #                             validators=[MinValueValidator(0), MaxValueValidator(20)])
 
-    mark1 = models.DecimalField(max_digits=4,
-                                decimal_places=2,
-                                null=True,
-                                blank=True,
-                                validators=[MinValueValidator(0), MaxValueValidator(20)])
-    mark2 = models.DecimalField(max_digits=4,
-                                decimal_places=2,
-                                null=True,
-                                blank=True,
-                                validators=[MinValueValidator(0), MaxValueValidator(20)])
-    updated_by = models.ForeignKey(Teacher, on_delete=models.CASCADE, null=True, blank=True, related_name='updatedmarks')
 
     class Meta:
         unique_together = ['student', 'subject', 'mark_type']
@@ -248,12 +251,19 @@ class Mark(models.Model):
 
     def clean(self):
         super().clean()
-        if self.mark1 is not None or self.mark2 is not None:
-            if self.mark1 > self.mark_type.max_mark or self.mark2 >self.mark_type.max_mark:
-                raise ValidationError(f"La note saisie est supérieure à {self.mark_type.max_mark}. Veuillez saisir une note dans l'interval de 0 à {self.mark_type.max_mark} !")
-            if self.mark1 < 0 or self.mark2 < 0:
-                raise ValidationError(f"La note saisie est inférieure à 0. Veuillez saisir une note dans l'interval de 0 à {self.mark_type.max_mark} !")
+        if self.student.classroom.level != self.mark_type.level:
+            raise ValidationError(f"level mismatch")
+        if self.student.classroom != self.subject.classroom:
+            raise ValidationError(f"Classroom mismatch")
 
+        if self.mark1 is not None and self.mark2 is not None:
+            print('is', self.mark1 is not None and self.mark2 is not None)
+            if self.mark1 > self.mark_type.max_mark or self.mark2 > self.mark_type.max_mark:
+                raise ValidationError(
+                    f"La note saisie est supérieure à {self.mark_type.max_mark}. Veuillez saisir une note dans l'interval de 0 à {self.mark_type.max_mark} !")
+            if self.mark1 < 0 or self.mark2 < 0:
+                raise ValidationError(
+                    f"La note saisie est inférieure à 0. Veuillez saisir une note dans l'interval de 0 à {self.mark_type.max_mark} !")
 
     def mark1_d(self):
         if self.mark1:
@@ -293,12 +303,18 @@ class SchoolInfo(models.Model):
 class MonthlySchedule(models.Model):
     name = models.CharField(max_length=200, null=False, blank=False, help_text="le nom peut etre mensuel, trimestriel ou semestriel. Ex: ('Janvier', '1er trimestre')")
     school = models.ForeignKey(SchoolYear, on_delete=models.CASCADE)
-    is_current = models.BooleanField(help_text="en l'activant, il devient l'emploi du temps courant que les professeurs et élèves vérons dans leur interface")
+    is_current = models.BooleanField(default=False, help_text="en l'activant, il devient l'emploi du temps courant que les professeurs et élèves vérons dans leur interface")
     class Meta:
         unique_together = ['name', 'school']
 
     def __str__(self):
         return self.name
+
+    def save(self, *args, **kwargs):
+        if self.is_current:
+            MonthlySchedule.objects.exclude(pk=self.pk, school=self.school).update(is_current=False)
+
+        super(MonthlySchedule, self).save(*args, **kwargs)
         
         
 
@@ -350,7 +366,7 @@ class TimeTable(models.Model):
         unique_together = ['schedule', 'day', 'timeslot']
 
     def __str__(self):
-        return f'{self.schedule}-{self.day}-{self.start_time}-{self.end_time}-{self.classroom}'
+        return f'{self.schedule}-{self.day}-{self.timeslot}-{self.classroom}'
     @property
     def taught_by(self):
         if self.subject.teacher:

@@ -1,0 +1,34 @@
+{% extends 'people/app_base.html' %}
+{% block content_body %}
+<div class="container">
+<div class="table">
+<table>
+    <thead>
+        <tr>
+            <th>Heures</th>
+            <th>Lundi</th>
+            <th>Mardi</th>
+            <th>Mercredi</th>
+            <th>Jeudi</th>
+            <th>Vendredi</th>
+            <th>Samedi</th>
+            <th>Dimance</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for time, subjects in timetable_dict.items %}
+
+                <tr>
+   <td>{{ time }} {{ subjects }}</td>
+
+                </tr>
+
+        {% endfor %}
+    </tbody>
+</table>
+    <hr>
+
+
+</div>
+</div>
+{% endblock %}

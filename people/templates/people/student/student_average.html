@@ -1,0 +1,86 @@
+{% extends 'people/app_base.html' %}
+{% block content_body %}
+<div class="container px-lg-5">
+    <div class="card shadow bg-body">
+    <div class="card-header py-0">
+        <div class="card-title py-2">Notes et Moyennes</div>
+        <div class="small text-muted py-0">Session 2023-2024</div>
+    </div>
+    <div class="card-body">
+
+        <table class="table table-bordered text-center border-0 border-dark-subtle rounded small">
+            <thead class="bg-secondary-subtle p-0">
+                <tr class="p-0">
+                    <th class="pb-3" rowspan="2">
+                        Trimestres
+                    </th>
+                    <th colspan="2">Cours</th>
+                    <th colspan="2">Compos.</th>
+                    <th colspan="2">Général</th>
+                </tr>
+                <tr>
+                    <th>Pts</th>
+                    <th>moy</th>
+                    <th>Pts</th>
+                    <th>moy</th>
+                    <th class="bg-info">Moy. Gle.</th>
+                    <th>Appr.</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for avg in avg_mark %}
+                <tr>
+                    <td>{{ avg.mark_type__name }}</td>
+                    <td>ff</td>
+                    <td>{{ avg.avg_mark1|floatformat:2 }}</td>
+                    <td>ggg</td>
+                    <td>{{ avg.avg_mark2|floatformat:2 }}</td>
+                    <td>{{ avg.avg_gen|floatformat:2 }}</td>
+                    <td>good</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    </div>
+{% for key, value in student_subject_avg.items %}
+<div class="py-5">
+    <div class="card shadow bg-body">
+        <div class="card-header">
+            <div>{{ key }}</div>
+        </div>
+        <div class="card-body">
+            <table class="table table-hover table-bordered table-striped">
+        <thead class="border-bottom">
+            <tr>
+                <th scope="col"><div class="small">Matières</div></th>
+                <th scope="col"><div class="small">Coef</div></th>
+                <th scope="col"><div class="small">Cours</div></th>
+                <th scope="col"><div class="small">Compos</div></th>
+                <th scope="col"><div class="small">total</div></th>
+                <th scope="col"><div class="small">Moyenne</div></th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for x in value %}
+            <tr>
+                <td><div class="small">{{ x.subject__name__name__name }}</div></td>
+                <td><div class="small">{{ x.subject__coef }}</div></td>
+                <td><div class="small">{{ x.mark1 }}</div></td>
+                <td><div class="small">{{ x.mark2 }}</div></td>
+                <td><div class="small">{{ x.points }}</div></td>
+                <td><div class="small">{{ x.avg_mark }}</div></td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+        </div>
+    </div>
+
+
+{% endfor %}
+</div>
+</div>
+
+
+{% endblock %}

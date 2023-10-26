@@ -10,59 +10,86 @@ a{
     text-decoration: none;
 }
 .wrapper{
+    /*display: flex;*/
+    /*flex-direction: column;*/
     min-height: 100vh;
-    width: 100%;
-    display: grid;
-    grid-template-columns: minmax(240px, auto) 1fr;
-    grid-template-rows: auto 1fr auto;
-    column-gap: 1PX;
-}
-.brand{
-    background-color: teal;
-    display: flex;
-    grid-area: 1/1/2/2;
-    align-items: center;
-    justify-content: center;
+    margin-left: 0;
 
 }
+
 .header{
-
     display: flex;
     justify-content: space-between;
     align-items: center;
     background-color: teal;
     color: snow;
-    grid-area: 1/2/2/3;
     padding: 10px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 60px;
+    z-index: 1;
+    transition-duration: .3s;
 
 }
 .aside{
+    width: 300px;
+    height: 100%;
     background-color: #2C3E50;
     color: snow;
-    grid-area: 2/1/3/2;
-    display: flex;
     flex-direction: column;
     align-items: center;
     padding-top: 20px;
     padding-left: 10px;
-
+    position: fixed;
+    top: 0;
+    left: -300px;
+    bottom: 0;
+    transition-duration: .3s;
+    z-index: 20;
+    overflow: auto;
+}
+.aside.show{
+    left: 0;
+    box-shadow: 0 6px 6px 6px rgba(0,0,0, .2);
+    transition-duration: .3s;
+}
+.darklayer{
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 11;
+}
+.darklayer.show{
+    display: block;
+    transition-duration: .3s;
 
 }
+
 .content{
     width: 100%;
-
-    margin-top: 0;
-    padding-top: 0;
-    background-color: #F1F1F1;
-    color: black;
-    grid-area: 2/2/3/3;
+    padding-top: 60px;
 }
 .footer{
     background-color: yellow;
-    color: black;
-    grid-area: 3/1/4/3;
 }
-
+@media (min-width: 992px){
+    .aside{
+        left: 0;
+        transition-duration: .3s;
+    }
+    .wrapper{
+        margin-left: 300px;
+        transition-duration: .3s;
+    }
+    .header{
+        left: 300px;
+    }
+}
 /* --------------auth--------------*/
 .body-userlogin,
 .body-usercreate{
@@ -231,26 +258,7 @@ a{
     object-fit: cover;
 
 }
-.aside .info{
-    padding-inline: 10px;
-    width: 150px;
 
-}
-.aside .info .firstname{
-    font-size: 1rem;
-    font-weight: lighter;
-}
-.aside .info .lastname{
-    font-size: 1rem;
-    font-weight: bold;
-}
-.aside .info .role{
-    font-weight: normal;
-    font-size: 0.8rem;
-
-
-
-}
 .aside .menu{
     margin-top: 20px;
     width: 100%;
@@ -263,6 +271,7 @@ a{
     border-top-left-radius: 10px;
     border-bottom-left-radius: 10px;
     overflow-inline: hidden;
+
 }
 .aside .menu ul li{
     list-style: none;
@@ -311,7 +320,7 @@ a{
 }
 .content .contenthead .nav{
     display: flex;
-    background-color: snow;
+    /*background-color: snow;*/
     align-items: center;
     min-height: 50px;
     justify-content: center;
@@ -385,7 +394,6 @@ a{
 .body-student-home .card-profile .body{
     box-shadow: 2px 2px 6px 2px rgba(180,180,180,0.1);
     display: flex;
-    background-color: #FDF8F8;
     padding: 10px;
     border-radius: 5px;
     height: calc(100% - 40px);

@@ -40,7 +40,7 @@ class WebAdmin(People):
 
 class Student(People):
 
-
+    @property
     def fullname(self):
         return f'{self.firstname} {self.lastname}'
 

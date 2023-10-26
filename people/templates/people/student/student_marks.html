@@ -25,14 +25,14 @@
                 <td>{{ mark.subject }}</td>
                 <td>
                     {% if mark.mark1 %}
-                        {{ mark.mark1 }}
+                        {{ mark.mark1|floatformat:2 }}
                     {% else %}
                         -
                     {% endif %}
                 </td>
                 <td>
                     {% if mark.mark2 %}
-                        {{ mark.mark2 }}
+                        {{ mark.mark2|floatformat:2 }}
                     {% else %}
                         -
                     {% endif %}

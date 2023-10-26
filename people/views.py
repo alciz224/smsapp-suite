@@ -1,16 +1,20 @@
+import pandas as pd
+
 from django.contrib.auth.mixins import UserPassesTestMixin
+from django.db.models import Avg, Sum, F
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import render, redirect
 
 # Create your views here.
-from django.template.loader import render_to_string
+
 from django.urls import reverse, reverse_lazy
 from django.views.generic import UpdateView, DetailView, TemplateView, ListView
 
-from people.forms import ProfileForm
-from people.mixins import UserInfoMixin
+
+from people.mixins import UserInfoMixin, StudentAverageMixin, TeacherClassroomAverageMixin
 from people.models import Student
-from school.models import SchoolYear, Classroom, Mark, SchoolYearStudent
+from school.models import SchoolYear, Classroom, Mark, SchoolYearStudent, Subject, TimeTable
+
 
 
 class SchoolYearSelect(UserInfoMixin, TemplateView):
@@ -62,6 +66,15 @@ class StudentDetailView(UserInfoMixin, UserPassesTestMixin, DetailView):
     context_object_name = 'student'
     template_name = 'people/student/student_detail.html'
 
+    def dispatch(self, request, *args, **kwargs):
+        school_year = request.session.get("school_year")
+        link = request.get_full_path()
+        if school_year is None:
+            request.session['next'] = link
+            return redirect("schoolyearselect")
+
+        return super().dispatch(request, *args, **kwargs)
+
 
     def test_func(self):
         return self.request.user.is_authenticated and self.request.user.user_type == 'STUDENT'
@@ -75,6 +88,15 @@ class StudentUpdateView(UserInfoMixin, UserPassesTestMixin, UpdateView):
     fields = ['image']
     template_name = 'people/student/student_profile_update.html'
     success_url = reverse_lazy('student_home')
+
+    def dispatch(self, request, *args, **kwargs):
+        school_year = request.session.get("school_year")
+        link = request.get_full_path()
+        if school_year is None:
+            request.session['next'] = link
+            return redirect("schoolyearselect")
+
+        return super().dispatch(request, *args, **kwargs)
 
     def test_func(self):
         return self.request.user.is_authenticated and self.request.user.user_type == 'STUDENT'
@@ -101,8 +123,8 @@ class StudentClassroomView(UserInfoMixin, UserPassesTestMixin,  TemplateView):
         context = super().get_context_data(**kwargs)
         student = context.get('current_year_student')
         classroom = Classroom.objects.get(id=student.classroom.id)
-        subjects = classroom.subjects.all()
         context['classroom'] = classroom
+
         return context
 
     def test_func(self):
@@ -116,6 +138,15 @@ class StudentMarksView(UserInfoMixin, UserPassesTestMixin,  TemplateView):
     template_name = 'people/student/student_marks.html'
     success_url = reverse_lazy('student_marks')
 
+    def dispatch(self, request, *args, **kwargs):
+        school_year = request.session.get("school_year")
+        link = request.get_full_path()
+        if school_year is None:
+            request.session['next'] = link
+            return redirect("schoolyearselect")
+
+        return super().dispatch(request, *args, **kwargs)
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         profile = Student.objects.get(user=self.request.user)
@@ -126,23 +157,75 @@ class StudentMarksView(UserInfoMixin, UserPassesTestMixin,  TemplateView):
         for mark_type in mark_types:
             items_in_mark_type = Mark.objects.filter(student=student, mark_type__name=mark_type['mark_type__name'])
             mark_types_data.append({'mark_type': mark_type['mark_type__name'], 'items': items_in_mark_type})
-        print(mark_types_data)
         context['mark_types_data'] = mark_types_data
         return context
 
 
+    def test_func(self):
+        return self.request.user.is_authenticated and self.request.user.user_type == 'STUDENT'
 
-    # def get_queryset(self):
-    #
-    #     mark_type = self.request.POST.get('mark_type')
-    #     if mark_type:
-    #         queryset.filter(mark_type=mark_type)
-    #     print(student)
-    #     print(queryset)
-    #     return queryset
+    def handle_no_permission(self):
+        return HttpResponse('Heeee Petit Curieux tu vas ou? retournes-toi!!!!')
+
+class StudentAverageView(StudentAverageMixin, UserPassesTestMixin,  TemplateView):
+
+    template_name = 'people/student/student_average.html'
+    def dispatch(self, request, *args, **kwargs):
+        school_year = request.session.get("school_year")
+        link = request.get_full_path()
+        if school_year is None:
+            request.session['next'] = link
+            return redirect("schoolyearselect")
+
+        return super().dispatch(request, *args, **kwargs)
 
 
 
+    def test_func(self):
+        return self.request.user.is_authenticated and self.request.user.user_type == 'STUDENT'
+
+    def handle_no_permission(self):
+        return HttpResponse('Heeee Petit Curieux tu vas ou? retournes-toi!!!!')
+
+class StudentTimeTableView(UserInfoMixin, UserPassesTestMixin,  TemplateView):
+
+    template_name = 'people/student/student_timetable.html'
+    def dispatch(self, request, *args, **kwargs):
+        school_year = request.session.get("school_year")
+        link = request.get_full_path()
+        if school_year is None:
+            request.session['next'] = link
+            return redirect("schoolyearselect")
+
+        return super().dispatch(request, *args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        student = context.get('current_year_student')
+        classroom = student.classroom
+        timetables = TimeTable.objects.filter(classroom=classroom, schedule__is_current=True)
+        data = list(timetables.values('day', 'timeslot__name', 'subject__name__name__name'))
+        if data:
+            print(True)
+        else:
+            print(False)
+        df = pd.DataFrame(data)
+        timetable = df.pivot(index='timeslot__name', columns='day', values='subject__name__name__name')
+        timetable = timetable.fillna('No data')
+        ht=timetable.to_html()
+        timetable = timetable.to_dict()
+        days_of_week = ['LUNDI', 'MARDI', 'MERCREDI', 'JEUDI', 'VENDREDI', 'SAMEDI', 'DIMANCHE']
+        timetable_dict = {day: timetable.get(day, 'No data') for day in days_of_week}
+        print('timetable_dict: ', timetable_dict.keys())
+        for i in timetable_dict.items():
+            print('v', i)
+
+        context['timetable_dict'] = timetable_dict
+
+
+
+
+        return context
 
 
     def test_func(self):
@@ -154,7 +237,7 @@ class StudentMarksView(UserInfoMixin, UserPassesTestMixin,  TemplateView):
 
 
 #-----------------TEACHER VIEWS----------------------------------
-class TeacherHomeView(UserInfoMixin, UserPassesTestMixin, TemplateView):
+class TeacherHomeView(TeacherClassroomAverageMixin, UserPassesTestMixin, TemplateView):
 
     def dispatch(self, request, *args, **kwargs):
         school_year = request.session.get("school_year")

@@ -1,11 +1,14 @@
 {% extends 'common.html' %}
 {% block body %}
-    <div class="wrapper">
-        <div class="brand"><div class="brandtext">GuinApp.com</div></div>
+    <div id="aside" class="aside">{% block aside %}{% endblock %}</div>
+    <div id="darklayer" class="darklayer bg-dark bg-opacity-50"></div>
+    <div id="wrapper" class="wrapper">
+
         <div class="header">
+            <i id="asidetoggler" class="fas fa-bars p-2 border d-block d-lg-none"></i>
             <div class="headertitle">{% block header_title %}{% endblock %}</div>
             <div class="headerdetail">
-                    <div class="greenlight"></div>
+                <div class="greenlight rounded-circle"></div>
                 <div class="picwrapper">
                     {% if profile.image %}
 
@@ -23,8 +26,21 @@
                 {% endif %}
             </div>
         </div>
-        <div class="aside">{% block aside %}{% endblock %}</div>
         <div class="content">{% block content %}{% endblock %}</div>
-        <div class="footer">{% block footer %}{% endblock %}</div>
     </div>
+{% endblock %}
+{% block page_js %}
+    <script>
+        $(document).ready(function (){
+            $("#asidetoggler").click(function (){
+                $("#aside").toggleClass("show");
+                $("#darklayer").toggleClass("show");
+            });
+            $("#darklayer").click(function (){
+                $("#aside").toggleClass("show");
+                $(this).toggleClass("show");
+            });
+
+        })
+    </script>
 {% endblock %}
